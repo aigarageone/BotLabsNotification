@@ -11,8 +11,13 @@ const configManager = require('../config/manager');
 const { mainMenu } = require('../utils/keyboards');
 
 function registerCallbacks(bot) {
-  // All admin callbacks go through auth check
-  bot.on('callback_query', adminCallbackOnly, () => {});
+  // Auth middleware for all callback queries — checks admin, then passes through to bot.action() handlers
+  bot.use((ctx, next) => {
+    if (ctx.callbackQuery) {
+      return adminCallbackOnly(ctx, next);
+    }
+    return next();
+  });
 
   // Main menu
   bot.action('main_menu', (ctx) => {
