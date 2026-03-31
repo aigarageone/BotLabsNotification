@@ -84,11 +84,22 @@ class Scheduler {
     const { text, extra } = buildNotificationMessage(slot, config.defaultMeetingLink);
 
     try {
-      await withRetry(
+      const sentMessage = await withRetry(
         () => this.bot.telegram.sendMessage(chatId, text, extra),
         `send notification ${slotId}`
       );
       logger.info('Notification sent', { slotId, chatId });
+
+      // Auto-delete after 10 minutes
+      const DELETE_AFTER_MS = 10 * 60 * 1000;
+      setTimeout(async () => {
+        try {
+          await this.bot.telegram.deleteMessage(chatId, sentMessage.message_id);
+          logger.info('Notification auto-deleted', { slotId, chatId, messageId: sentMessage.message_id });
+        } catch (delErr) {
+          logger.warn('Failed to auto-delete notification', { slotId, error: delErr.message });
+        }
+      }, DELETE_AFTER_MS);
     } catch (err) {
       logger.error('Failed to send notification after retries', {
         slotId,
