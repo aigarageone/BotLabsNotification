@@ -1,0 +1,56 @@
+const DEFAULT_CONFIG = {
+  chatId: null,
+  globalEnabled: true,
+  defaultMeetingLink: process.env.DEFAULT_MEETING_LINK || 'https://meet.google.com/xxx-xxxx-xxx',
+  timezone: process.env.TIMEZONE || 'Europe/Kyiv',
+  adminId: null,
+  slots: [
+    {
+      id: 'morning_greeting',
+      time: '10:00',
+      text: '☀️ Продуктивного Вам дня!',
+      showButton: true,
+      buttonText: 'Підключитися',
+      meetingLink: null,
+      enabled: true,
+    },
+    {
+      id: 'morning_pre',
+      time: '10:10',
+      text: '⏰ Стендап через 5 хвилин!',
+      showButton: true,
+      buttonText: 'Підключитися',
+      meetingLink: null,
+      enabled: true,
+    },
+    {
+      id: 'morning_start',
+      time: '10:15',
+      text: '✅ Стендап почався. Всі на зв\'язку!',
+      showButton: false,
+      buttonText: null,
+      meetingLink: null,
+      enabled: true,
+    },
+    {
+      id: 'evening_reminder',
+      time: '17:55',
+      text: '🔔 Вечірній синк через 5 хвилин!',
+      showButton: true,
+      buttonText: 'Підключитися',
+      meetingLink: null,
+      enabled: true,
+    },
+    {
+      id: 'evening_start',
+      time: '18:00',
+      text: '✅ Вечірній синк почався. Всі на зв\'язку!',
+      showButton: false,
+      buttonText: null,
+      meetingLink: null,
+      enabled: true,
+    },
+  ],
+};
+
+module.exports = { DEFAULT_CONFIG };
